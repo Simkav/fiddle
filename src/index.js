@@ -13,14 +13,16 @@ app.set('view engine', 'pug')
 
 const server = http.createServer(app)
 
-const socket = socketIo(server)
+const io = socketIo(server)
 
 app.get('/', (req, res, next) => {
-  res.render('index')
+  res.render('index', { pageTitle: 'JSFiddle' })
 })
 
-socket.on('connection', () => {
-  console.log('connection to socket')
+io.on('connection', socket => {
+  socket.emit('hello', 'world')
+  socket.on('data', data => {
+  })
 })
 
 server.listen(8001)

@@ -2,15 +2,14 @@ doctype html
 html(lang="en")
   head
     title= pageTitle
-    script(src="./public/js/index.js").
-      if (foo) bar(1 + 5)
+    link(rel="shortcut icon", href="./public/favicon.png",type="image/x-icon")
+    link(rel="stylesheet", href="./public/css/styles.css")
+    script(src="https://cdn.socket.io/4.1.2/socket.io.min.js",integrity="sha384-toS6mmwu70G0fw54EGlWWeA4z3dyJ+dlXBtSURSKN4vyRFOcxd3Bzjj/AoOwY+Rg", crossorigin="anonymous")
+    script(src="./public/js/index.js")
   body
-    h1 Pug - node template engine
-    #container.col
-      if youAreUsingPug
-        p You are amazing
-      else
-        p Get on it!
-      p.
-        Pug is a terse and simple templating language with a
-        strong focus on performance and powerful features.
+    header
+      div
+        p Header here
+    main 
+      div 
+        p Main section here

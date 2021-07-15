@@ -1,0 +1,7 @@
+body {
+  height: 100vh;
+  overflow: hidden;
+}
+main {
+  background-color: hsla(0, 0%, 0%, 0.363);
+}
