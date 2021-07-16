@@ -3,13 +3,18 @@ html(lang="en")
   head
     title= pageTitle
     link(rel="shortcut icon", href="./public/favicon.png",type="image/x-icon")
+    link(rel='stylesheet', href='./public/css/reset.css')
     link(rel="stylesheet", href="./public/css/styles.css")
-    script(src="https://cdn.socket.io/4.1.2/socket.io.min.js",integrity="sha384-toS6mmwu70G0fw54EGlWWeA4z3dyJ+dlXBtSURSKN4vyRFOcxd3Bzjj/AoOwY+Rg", crossorigin="anonymous")
-    script(src="./public/js/index.js")
+    link(rel="stylesheet", href="./public/css/codemirror.css")
+    link(rel="stylesheet", href="./public/css/ayu-dark.css")
+    script(src='./public/js/bundle.js')
   body
     header
-      div
+      div.header-container
         p Header here
     main 
-      div 
-        p Main section here
+      section.container
+        textarea.child#js-text-area console.log('hello')
+        textarea.child#css-text-area .test{color:red}
+        textarea.child#html-text-area <body class='test'></body>
+        textarea.child#compiled-text-area test

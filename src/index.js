@@ -21,8 +21,7 @@ app.get('/', (req, res, next) => {
 
 io.on('connection', socket => {
   socket.emit('hello', 'world')
-  socket.on('data', data => {
-  })
+  socket.on('data', data => {})
 })
 
 server.listen(8001)

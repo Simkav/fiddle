@@ -1,7 +1,17 @@
 body {
   height: 100vh;
-  overflow: hidden;
 }
-main {
-  background-color: hsla(0, 0%, 0%, 0.363);
+.header-container {
+  display: flex;
+  background-color: aquamarine;
+  border: 2px dashed black;
+  padding: 2px;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.child {
+  border: 2px solid black;
+  height: 40%;
 }
