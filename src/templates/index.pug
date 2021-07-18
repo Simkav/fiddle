@@ -1,20 +1,16 @@
 doctype html
 html(lang="en")
   head
-    title= pageTitle
-    link(rel="shortcut icon", href="./public/favicon.png",type="image/x-icon")
-    link(rel='stylesheet', href='./public/css/reset.css')
-    link(rel="stylesheet", href="./public/css/styles.css")
-    link(rel="stylesheet", href="./public/css/codemirror.css")
-    link(rel="stylesheet", href="./public/css/ayu-dark.css")
-    script(src='./public/js/bundle.js')
+    include head.pug
   body
     header
-      div.header-container
-        p Header here
-    main 
-      section.container
-        textarea.child#javascript-text-area console.log('hello');
-        textarea.child#css-text-area .test{color:red}
-        textarea.child#htmlmixed-text-area <body class="test"></body>
-        textarea.child#compiled-text-area test
+      include header.pug 
+    main.main-containers
+      section.containers.cm-container.hidden
+        include cm.pug
+      section.containers.login-container
+        include login.pug
+      section.containers.lobbys-container.hidden
+        include lobbys.pug
+      section.containers.lobby-container.hidden
+        include lobby.pug

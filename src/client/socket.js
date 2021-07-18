@@ -8,6 +8,4 @@ socket.on('log', data => {
   console.log(data)
 })
 
-module.exports = {
-  socket
-}
+module.exports = socket
