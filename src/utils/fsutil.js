@@ -1,7 +1,7 @@
 const path = require('path')
 const fs = require('fs')
 const defaultRoomLayotDir = path.resolve(__dirname, '../', 'defaultRoom')
-const roomsPath = path.resolve(__dirname, '../', 'public', 'rooms')
+const roomsPath = path.resolve(__dirname, '../', 'rooms')
 const defaultFiles = ['index.html', 'styles.css', 'index.js']
 const parseFile = async (nickname, file) =>
   await fs.promises.readFile(path.resolve(roomsPath, nickname, file), {
@@ -39,8 +39,18 @@ const createRoom = nickname => {
   })
 }
 
+const initRoomsFolder = () => {
+  const dir = path.resolve(__dirname, '../', 'rooms')
+  try {
+    fs.accessSync(dir)
+  } catch (err) {
+    fs.mkdirSync(dir)
+  }
+}
+
 module.exports = {
   createRoom,
   parseRoomFiles,
-  parseFile
+  parseFile,
+  initRoomsFolder
 }
