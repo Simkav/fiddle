@@ -37,7 +37,14 @@ const options = {
   lint: true
 }
 
+const createCmFromTextArea = mode =>
+  codemirror.fromTextArea(document.getElementById(`${mode}-text-area`), {
+    ...options,
+    mode
+  })
+
 module.exports = {
   options,
-  codemirror
+  codemirror,
+  createCmFromTextArea
 }
