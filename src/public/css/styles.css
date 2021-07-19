@@ -1,6 +1,4 @@
-body {
-  /* height: 100vh; */
-}
+/* TODO Refactor to bootstrap */
 .containers {
   position: absolute;
 }
@@ -37,8 +35,6 @@ body {
 }
 .login-wrap > * {
   margin: 10px 0;
-}
-.login-container {
 }
 .login-submit {
   width: 40%;
