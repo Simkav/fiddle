@@ -2,8 +2,12 @@ const path = require('path')
 const webpack = require('webpack')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 module.exports = {
+  mode: 'development',
   entry: {
     main: path.resolve(__dirname, 'src/client/index.js')
+  },
+  watchOptions: {
+    ignored: '**/node_modules'
   },
   output: {
     path: path.resolve(__dirname, 'src/public/js'),
