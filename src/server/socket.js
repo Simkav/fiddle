@@ -9,7 +9,7 @@ const logRooms = () => {
 }
 
 io.on('connection', socket => {
-  logRooms()
+  // logRooms()
   socket.on('login', nickname => {
     if (players[nickname]) {
       socket.emit('401')
@@ -19,8 +19,7 @@ io.on('connection', socket => {
     }
   })
   socket.on('auth', ({ nickname, authId }) => {
-    logRooms()
-
+    // logRooms()
     if (players[nickname] && authId && players[nickname] === authId) {
       createRoom(nickname)
       socket.emit('authed')
@@ -30,15 +29,18 @@ io.on('connection', socket => {
     }
   })
   socket.on('create-lobby', nickname => {
-    logRooms()
-
+    // logRooms()
     if (nickname) {
-      console.log(nickname)
       socket.leave('lobbys')
       socket.join(nickname)
       createRoom(nickname)
       socket.emit('lobbyJoined', nickname)
-      parseRoomFiles('asdasd').then(data => socket.emit('lobbyFiles', data))
+      parseRoomFiles('asdasd')
+        .then(data => socket.emit('lobbyFiles', data))
+        .catch(err => {
+          // TODO wtf?
+          console.log(err, 'ERORA')
+        })
     } else {
       socket.emit('401')
     }
