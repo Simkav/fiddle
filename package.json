@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon src/",
+    "watch": "webpack --mode development --watch",
     "build": "webpack --watch"
   },
   "dependencies": {
