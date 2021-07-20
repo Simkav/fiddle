@@ -12,6 +12,27 @@ const parseRoomFiles = async nickname =>
   Promise.all(defaultFiles.map(file => parseFile(nickname, file))).then(
     data => data
   )
+const updateFile = async (room, file, value) => {
+  let fileName
+
+  switch (file) {
+    case 'js':
+      fileName = 'index.js'
+      break
+    case 'css':
+      fileName = 'styles.css'
+      break
+    case 'html':
+      fileName = 'index.html'
+      break
+    default:
+      break
+  }
+
+  fs.writeFile(path.resolve(roomsPath, room, fileName), value, err => {
+    if (err) console.error(err)
+  })
+}
 
 const copyDefaultRoom = dir =>
   defaultFiles.forEach(file => {
@@ -52,5 +73,6 @@ module.exports = {
   createRoom,
   parseRoomFiles,
   parseFile,
-  initRoomsFolder
+  initRoomsFolder,
+  updateFile
 }
