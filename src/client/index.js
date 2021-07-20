@@ -1,4 +1,4 @@
-const { codemirror, options, createCmFromTextArea } = require('./cm')
+const { codemirror, createCmFromTextArea } = require('./cm')
 const socket = require('./socket')
 const Swal = require('sweetalert2')
 // TODO Refactor dat shit
@@ -11,13 +11,24 @@ socket.on('logined', id => {
   localStorage.setItem('authId', id)
   setActiveContainer(2)
 })
-socket.on('authed', () => {
-  setActiveContainer(2)
-})
+
+const checkChanges = (file, cm, origin) => {
+  if (origin !== 'setValue') {
+    socket.emit('updateFile', prepareUpdate(file, cm))
+  }
+}
+
+socket.on('authed', () => setActiveContainer(2))
+
 socket.on('lobbyJoined', data => {
   localStorage.setItem('lobbyId', data)
   setActiveContainer(0)
 })
+
+socket.on('updateFile', ({ file, value }) => {
+  cmInstances[file].setValue(value)
+})
+
 socket.on('lobbyFiles', ([html, css, js]) => {
   myCmHtml.setValue(html)
   myCmCss.setValue(css)
@@ -34,6 +45,14 @@ const setActiveContainer = index => {
 }
 
 const getLocal = value => localStorage.getItem(value)
+
+const prepareUpdate = (file, cm) => ({
+  id: getLocal('lobbyId'),
+  file,
+  value: cm.getValue()
+})
+
+const cmInstances = {}
 
 let myCmJs
 let myCmCss
@@ -65,10 +84,15 @@ window.onload = () => {
   document.getElementById('create-lobby').addEventListener('click', () => {
     socket.emit('create-lobby', getLocal('nickname'))
   })
-  myCmJs = createCmFromTextArea('javascript')
+  myCmJs = createCmFromTextArea('javascript', {
+    lint: { esversion: 6, asi: true }
+  })
   myCmCss = createCmFromTextArea('css')
   myCmHtml = createCmFromTextArea('htmlmixed')
-  // myCmJs.on('changes', (cm, data) => {
-  //   console.log(data)
-  // })
+  cmInstances.js = myCmJs
+  cmInstances.css = myCmCss
+  cmInstances.html = myCmHtml
+  myCmJs.on('changes', (cm, [{ origin }]) => checkChanges('js', cm, origin))
+  myCmCss.on('changes', (cm, [{ origin }]) => checkChanges('css', cm, origin))
+  myCmHtml.on('changes', (cm, [{ origin }]) => checkChanges('html', cm, origin))
 }

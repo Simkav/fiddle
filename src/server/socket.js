@@ -1,46 +1,62 @@
-const { createRoom, parseRoomFiles, parseFile } = require('../utils/fsutil')
-
+const {
+  createRoom,
+  parseRoomFiles,
+  parseFile,
+  updateFile
+} = require('../utils/fsutil')
+const uuid = require('uuid')
 const players = {}
-
+const lobbys = new Set()
 const io = require('socket.io')(require('./server'))
 
-const logRooms = () => {
-  console.log(io.of('/').adapter.rooms)
+const updateLobbys = (room, isAdd = true) => {
+  if (room.slice(0, 5) === '_room') {
+    action ? lobbys.add(room) : lobbys.delete(room)
+    io.in('lobbys').emit('updateLobbyList', { list: [...lobbys] })
+  }
 }
 
+io.of('/').adapter.on('create-room', room => updateLobbys(room))
+
+io.of('/').adapter.on('delete-room', room => updateLobbys(room, false))
+
 io.on('connection', socket => {
-  // logRooms()
   socket.on('login', nickname => {
     if (players[nickname]) {
       socket.emit('401')
     } else {
       players[nickname] = socket.id
+      createRoom(nickname)
       socket.emit('logined', socket.id)
+      socket.emit('updateLobbyList', { list: [...lobbys] })
     }
   })
   socket.on('auth', ({ nickname, authId }) => {
-    // logRooms()
     if (players[nickname] && authId && players[nickname] === authId) {
       createRoom(nickname)
       socket.emit('authed')
       socket.join('lobbys')
+      socket.emit('updateLobbyList', { list: [...lobbys] })
     } else {
       socket.emit('flushAuth')
     }
   })
+  socket.on('getLobbyList', () => {
+    socket.emit('updateLobbyList', { list: [...lobbys] })
+  })
+  socket.on('updateFile', ({ id, file, value }) => {
+    updateFile(id, file, value)
+    socket.to(`room_${id}`).emit('updateFile', { file, value })
+  })
   socket.on('create-lobby', nickname => {
-    // logRooms()
     if (nickname) {
       socket.leave('lobbys')
-      socket.join(nickname)
+      socket.join(`room_${nickname}`)
       createRoom(nickname)
       socket.emit('lobbyJoined', nickname)
-      parseRoomFiles('asdasd')
-        .then(data => socket.emit('lobbyFiles', data))
-        .catch(err => {
-          // TODO wtf?
-          console.log(err, 'ERORA')
-        })
+      parseRoomFiles(nickname).then(data => {
+        socket.emit('lobbyFiles', data)
+      })
     } else {
       socket.emit('401')
     }
