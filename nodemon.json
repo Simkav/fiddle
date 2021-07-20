@@ -1,3 +1,1 @@
-{
-  "ignore": "src/rooms/*"
-}
+{ "ignore": ["src/rooms/*", "src/client/*", "src/public/*"] }
