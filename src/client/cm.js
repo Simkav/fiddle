@@ -24,7 +24,7 @@ require('codemirror/addon/lint/css-lint')
 
 const codemirror = require('codemirror')
 
-const options = {
+const defaultOptions = {
   lineNumbers: true,
   theme: 'ayu-dark',
   autoCloseBrackets: true,
@@ -37,14 +37,14 @@ const options = {
   lint: true
 }
 
-const createCmFromTextArea = mode =>
+const createCmFromTextArea = (mode, options = {}) =>
   codemirror.fromTextArea(document.getElementById(`${mode}-text-area`), {
-    ...options,
-    mode
+    ...defaultOptions,
+    mode,
+    ...options
   })
 
 module.exports = {
-  options,
   codemirror,
   createCmFromTextArea
 }
