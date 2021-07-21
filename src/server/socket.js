@@ -15,6 +15,15 @@ const updateLobbys = (room, isAdd = true) => {
   }
 }
 
+const joinRoom = (socket, id) => {
+  socket.leave('lobbys')
+  socket.join(`room_${id}`)
+  socket.emit('lobbyJoined', id)
+  parseRoomFiles(id).then(data => {
+    socket.emit('lobbyFiles', data)
+  })
+}
+
 io.of('/').adapter.on('create-room', room => updateLobbys(room))
 
 io.of('/').adapter.on('delete-room', room => updateLobbys(room, false))
@@ -47,15 +56,12 @@ io.on('connection', socket => {
     updateFile(id, file, value)
     socket.to(`room_${id}`).emit('updateFile', { file, value })
   })
+  socket.on('join-lobby', id => {
+    joinRoom(socket, id)
+  })
   socket.on('create-lobby', nickname => {
     if (nickname) {
-      socket.leave('lobbys')
-      socket.join(`room_${nickname}`)
-      createRoom(nickname)
-      socket.emit('lobbyJoined', nickname)
-      parseRoomFiles(nickname).then(data => {
-        socket.emit('lobbyFiles', data)
-      })
+      joinRoom(socket, nickname)
     } else {
       socket.emit('401')
     }
