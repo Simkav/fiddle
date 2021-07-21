@@ -26,7 +26,10 @@ socket.on('lobbyJoined', data => {
 })
 
 socket.on('updateFile', ({ file, value }) => {
-  cmInstances[file].setValue(value)
+  const instance = cmInstances[file]
+  const cursor = instance.getCursor()
+  instance.setValue(value)
+  instance.setCursor(cursor)
 })
 
 socket.on('lobbyFiles', ([html, css, js]) => {
