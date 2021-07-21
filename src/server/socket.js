@@ -9,8 +9,8 @@ const lobbys = new Set()
 const io = require('socket.io')(require('./server'))
 
 const updateLobbys = (room, isAdd = true) => {
-  if (room.slice(0, 5) === '_room') {
-    action ? lobbys.add(room) : lobbys.delete(room)
+  if (room.slice(0, 5) === 'room_') {
+    isAdd ? lobbys.add(room) : lobbys.delete(room)
     io.in('lobbys').emit('updateLobbyList', { list: [...lobbys] })
   }
 }
