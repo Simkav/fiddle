@@ -1,5 +1,11 @@
 const io = require('socket.io-client')
-const socket = io()
+const socket = io({
+  autoConnect: false,
+  auth: {
+    id: localStorage.getItem('authId') || null,
+    nickname: localStorage.getItem('nickname') || null
+  }
+})
 const Swal = require('sweetalert2')
 socket.on('401', () => {
   Swal.fire({ title: 'Already authorized', icon: 'error' })

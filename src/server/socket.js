@@ -24,6 +24,13 @@ const joinRoom = (socket, id) => {
 io.on('create-room', room => updateLobbys(room))
 io.on('delete-room', room => updateLobbys(room, false))
 io.on('connection', socket => {
+  const {
+    handshake: {
+      auth: { id, nickname }
+    }
+  } = socket
+  console.log(id)
+  console.log(nickname)
   socket.on('login', nickname => {
     if (players[nickname]) {
       socket.emit('401')

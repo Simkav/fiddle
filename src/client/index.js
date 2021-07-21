@@ -12,6 +12,8 @@ socket.on('logined', id => {
   setActiveContainer(2)
 })
 
+socket.connect()
+
 const preapareUl = list => {
   const ul = document.createElement('ul')
   const lis = list.map(room => {
