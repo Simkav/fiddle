@@ -29,8 +29,25 @@ io.on('connection', socket => {
       auth: { id, nickname }
     }
   } = socket
-  console.log(id)
-  console.log(nickname)
+  // TODO refactor login sys
+  if (nickname) {
+    const checked = players[nickname]
+    if (checked) {
+      if (id) {
+        if (checked === id) {
+          // success auth
+        } else {
+          // wrong auth relogin
+        }
+      } else {
+        if (checked) {
+          // this user already logined
+        } else {
+          // checked = socket.id success
+        }
+      }
+    }
+  }
   socket.on('login', nickname => {
     if (players[nickname]) {
       socket.emit('401')
