@@ -5,9 +5,7 @@
   color: #b3b1ad;
 }
 .cm-s-ayu-dark {
-  border: 2px solid black;
-  width: 49%;
-  height: 40vh;
+  width: 50%;
 }
 .cm-s-ayu-dark div.CodeMirror-selected {
   background: #273747;
