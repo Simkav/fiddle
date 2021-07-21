@@ -1,12 +1,9 @@
-const {
-  createRoom,
-  parseRoomFiles,
-  parseFile,
-  updateFile
-} = require('../utils/fsutil')
+const { createRoom, parseRoomFiles, updateFile } = require('../utils/fsutil')
+const { updateIframe } = require('../utils/iframe')
+const io = require('socket.io')(require('./server'))
+
 const players = {}
 const lobbys = new Set()
-const io = require('socket.io')(require('./server'))
 
 const updateLobbys = (room, isAdd = true) => {
   if (room.slice(0, 5) === 'room_') {
@@ -24,10 +21,8 @@ const joinRoom = (socket, id) => {
   })
 }
 
-io.of('/').adapter.on('create-room', room => updateLobbys(room))
-
-io.of('/').adapter.on('delete-room', room => updateLobbys(room, false))
-
+io.on('create-room', room => updateLobbys(room))
+io.on('delete-room', room => updateLobbys(room, false))
 io.on('connection', socket => {
   socket.on('login', nickname => {
     if (players[nickname]) {
@@ -35,6 +30,7 @@ io.on('connection', socket => {
     } else {
       players[nickname] = socket.id
       createRoom(nickname)
+      socket.join('lobbys')
       socket.emit('logined', socket.id)
       socket.emit('updateLobbyList', { list: [...lobbys] })
     }
