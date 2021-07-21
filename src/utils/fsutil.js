@@ -12,6 +12,7 @@ const parseRoomFiles = async nickname =>
   Promise.all(defaultFiles.map(file => parseFile(nickname, file))).then(
     data => data
   )
+
 const updateFile = async (room, file, value) => {
   let fileName
 
@@ -29,6 +30,10 @@ const updateFile = async (room, file, value) => {
       break
   }
 
+  writeFile(roomsPath, room, fileName, value)
+}
+
+const writeFile = (roomsPath, room, fileName, value) => {
   fs.writeFile(path.resolve(roomsPath, room, fileName), value, err => {
     if (err) console.error(err)
   })
@@ -70,9 +75,12 @@ const initRoomsFolder = () => {
 }
 
 module.exports = {
+  writeFile,
+  roomsPath,
+  parseFile,
+  defaultFiles,
   createRoom,
   parseRoomFiles,
-  parseFile,
   initRoomsFolder,
   updateFile
 }
