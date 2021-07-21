@@ -4,7 +4,6 @@ const {
   parseFile,
   updateFile
 } = require('../utils/fsutil')
-const uuid = require('uuid')
 const players = {}
 const lobbys = new Set()
 const io = require('socket.io')(require('./server'))
