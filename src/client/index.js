@@ -119,3 +119,12 @@ cmInstances.html = myCmHtml
 myCmJs.on('changes', (cm, [{ origin }]) => checkChanges('js', cm, origin))
 myCmCss.on('changes', (cm, [{ origin }]) => checkChanges('css', cm, origin))
 myCmHtml.on('changes', (cm, [{ origin }]) => checkChanges('html', cm, origin))
+
+document.getElementById('updateIframe').addEventListener('click', () => {
+  socket.emit('updateIframe', getLocal('lobbyId'))
+})
+socket.on('updateIframe', () => {
+  document
+    .getElementById('iframe')
+    .setAttribute('src', `./rooms/${getLocal('lobbyId')}/iframe.html`)
+})
