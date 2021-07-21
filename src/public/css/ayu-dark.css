@@ -6,6 +6,7 @@
 }
 .cm-s-ayu-dark {
   width: 50%;
+  height: 50%;
 }
 .cm-s-ayu-dark div.CodeMirror-selected {
   background: #273747;
