@@ -66,4 +66,13 @@ io.on('connection', socket => {
       socket.emit('401')
     }
   })
+  socket.on('updateIframe', id => {
+    updateIframe(id)
+      .then(() => {
+        socket.emit('updateIframe')
+      })
+      .catch(err => {
+        console.error(err)
+      })
+  })
 })
