@@ -58,41 +58,39 @@ let myCmJs
 let myCmCss
 let myCmHtml
 
-window.onload = () => {
-  const containers = (window.containers = document.querySelectorAll('main>*'))
-  setActiveContainer(1)
-  localStorage.removeItem('lobbyId')
-  let nickname = localStorage.getItem('nickname')
-  let authId = localStorage.getItem('authId')
-  if (nickname && authId) {
-    socket.emit('auth', { nickname, authId })
-  }
-  document.querySelector('.login-submit').addEventListener('click', () => {
-    const input = document.getElementById('login-input').value
-    if (input.length < 6) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Short nickname',
-        text: 'Nickname must be at least 6 characters',
-        timer: 2000
-      })
-    } else {
-      localStorage.setItem('nickname', input)
-      socket.emit('login', getLocal('nickname'))
-    }
-  })
-  document.getElementById('create-lobby').addEventListener('click', () => {
-    socket.emit('create-lobby', getLocal('nickname'))
-  })
-  myCmJs = createCmFromTextArea('javascript', {
-    lint: { esversion: 6, asi: true }
-  })
-  myCmCss = createCmFromTextArea('css')
-  myCmHtml = createCmFromTextArea('htmlmixed')
-  cmInstances.js = myCmJs
-  cmInstances.css = myCmCss
-  cmInstances.html = myCmHtml
-  myCmJs.on('changes', (cm, [{ origin }]) => checkChanges('js', cm, origin))
-  myCmCss.on('changes', (cm, [{ origin }]) => checkChanges('css', cm, origin))
-  myCmHtml.on('changes', (cm, [{ origin }]) => checkChanges('html', cm, origin))
+const containers = (window.containers = document.querySelectorAll('main>*'))
+setActiveContainer(1)
+localStorage.removeItem('lobbyId')
+let nickname = localStorage.getItem('nickname')
+let authId = localStorage.getItem('authId')
+if (nickname && authId) {
+  socket.emit('auth', { nickname, authId })
 }
+document.querySelector('.login-submit').addEventListener('click', () => {
+  const input = document.getElementById('login-input').value
+  if (input.length < 6) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Short nickname',
+      text: 'Nickname must be at least 6 characters',
+      timer: 2000
+    })
+  } else {
+    localStorage.setItem('nickname', input)
+    socket.emit('login', getLocal('nickname'))
+  }
+})
+document.getElementById('create-lobby').addEventListener('click', () => {
+  socket.emit('create-lobby', getLocal('nickname'))
+})
+myCmJs = createCmFromTextArea('javascript', {
+  lint: { esversion: 6, asi: true }
+})
+myCmCss = createCmFromTextArea('css')
+myCmHtml = createCmFromTextArea('htmlmixed')
+cmInstances.js = myCmJs
+cmInstances.css = myCmCss
+cmInstances.html = myCmHtml
+myCmJs.on('changes', (cm, [{ origin }]) => checkChanges('js', cm, origin))
+myCmCss.on('changes', (cm, [{ origin }]) => checkChanges('css', cm, origin))
+myCmHtml.on('changes', (cm, [{ origin }]) => checkChanges('html', cm, origin))
