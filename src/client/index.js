@@ -12,6 +12,28 @@ socket.on('logined', id => {
   setActiveContainer(2)
 })
 
+const preapareUl = list => {
+  const ul = document.createElement('ul')
+  const lis = list.map(room => {
+    const li = document.createElement('li')
+    const btn = document.createElement('button')
+    btn.textContent = room.slice(5)
+    btn.addEventListener('click', () => {
+      socket.emit('join-lobby', room.slice(5))
+    })
+    li.appendChild(btn)
+    return li
+  })
+  lis.forEach(li => ul.appendChild(li))
+  return ul
+}
+
+socket.on('updateLobbyList', ({ list }) =>
+  lobbyList.replaceChild(preapareUl(list), lobbyList.firstChild)
+)
+
+const lobbyList = (window.lobbyList = document.getElementById('lobby-list'))
+
 const checkChanges = (file, cm, origin) => {
   if (origin !== 'setValue') {
     socket.emit('updateFile', prepareUpdate(file, cm))

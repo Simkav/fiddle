@@ -11,9 +11,5 @@ socket.on('flushauth', () => {
   localStorage.removeItem('nickname')
   localStorage.removeItem('authId')
 })
-socket.on('updateLobbyList', data => {
-  // TODO Render dat shit
-  console.log(data)
-})
 
 module.exports = socket
